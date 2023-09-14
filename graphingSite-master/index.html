@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphing Stuff</title>
+    <!-- min version -->
+    <!-- <script src="https://cdn.plot.ly/plotly-2.17.0.min.js"></script> --> 
+    <script src="https://cdn.plot.ly/plotly-2.17.0.js" charset="utf-8"></script>
+    <link ref="stylesheet" href="./style.css">
+</head>
+<body>
+    <style>
+        body {
+            font-size: 1.25em;
+        }
+
+        input[type="file"]::file-selector-button {
+            display: none;
+        }
+
+        input[type="file"]:: {
+            display: none;
+        }
+
+        input[type="file"] {
+            border: 1px solid black;
+            padding: 100px;
+            border-radius: 10px;
+            transition: 250ms;
+            background-color: lightgray;
+            cursor: pointer;
+        }
+
+        input[type="file"]:hover {
+            background-color: gray;
+        }
+
+        #startGraphing {
+            cursor: pointer;
+            width: 150px;
+            height: 50px;
+            border-radius: 8px;
+            border: 1px solid gray;
+            margin-left: 50%;
+            margin-top: 10px;
+        }
+        
+        .notClicked {
+            transform: translate(calc(-50% - 10px));
+            box-shadow: 5px 5px 0px 0px black;
+        }
+        
+        .clicked {
+            box-shadow: 2px 2px 0px 0px black;
+            transform: translate(calc(5px - 50% - 10px), 5px);
+        }
+
+        #interface {
+            margin: auto;
+            width: 50%;
+            padding: 10px;
+            border-radius: 10px;
+        }
+    </style>
+    <canvas id="chartCanvas" style="width: 100%; height: 100%;" hidden></canvas>
+
+
+    <div id="interface">
+        <div id="inputInterface" style="text-align: center;">
+            <label for="docPicker"><h3>Click or drag to upload a .csv file</h3></label>
+            <input type="file" id="docPicker" accept=".csv" value="testing things">
+            <input type="button" value="Graph" id="startGraphing" class="notClicked" hidden>
+        </div>
+        <br/>
+        <div id="selectionInterface" style="text-align: center;" hidden>
+            <div style="margin: 10px; display: inline-block; text-align: left; margin-right: 100px;">
+                <h3>Choose x variable</h3>
+                <div id="xAxisVariable"></div>
+            </div>
+            <div style="margin: 10px;  display: inline-block; text-align: left;">
+                <h3>Choose y variables</h3>
+                <div id="graphHeaders"></div>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+    </div>
+    
+
+</body>
+</html>
+
+<script src="main.js"></script>
