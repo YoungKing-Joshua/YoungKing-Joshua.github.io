@@ -68,7 +68,7 @@ const processData = (rows) => {
         x,
         y: allYs[yLabel],
         text,
-        type: 'scatter',
+        type: 'line',
         mode: 'markers',
         name: yLabel,
     }))
