@@ -47,6 +47,35 @@
 				margin-top: 10px;
 			}
 
+			#barGraphing {
+				cursor: pointer;
+				width: 150px;
+				height: 50px;
+				border-radius: 8px;
+				border: 1px solid gray;
+				margin-left: 50%;
+				margin-top: 10px;
+			}
+
+			#pieGraphing {
+				cursor: pointer;
+				width: 150px;
+				height: 50px;
+				border-radius: 8px;
+				border: 1px solid gray;
+				margin-left: 50%;
+				margin-top: 10px;
+			}
+
+			#catterGraphing {
+				cursor: pointer;
+				width: 150px;
+				height: 50px;
+				border-radius: 8px;
+				border: 1px solid gray;
+				margin-left: 50%;
+				margin-top: 10px;
+			}
 			.notClicked {
 				transform: translate(calc(-50% - 10px));
 				box-shadow: 5px 5px 0px 0px black;
@@ -65,13 +94,18 @@
 			}
 		</style>
 		<!-- Use a canvas element for Chart.js -->
-		<canvas id="chartCanvas" style="width: 100%; height: 100%" hidden></canvas>
+		<canvas id="chartCanvas" width="400" height="200" hidden></canvas>
 
 		<div id="interface">
 			<div id="inputInterface" style="text-align: center">
 				<label for="docPicker"><h3>Click or drag to upload a .csv file</h3></label>
 				<input type="file" id="docPicker" accept=".csv" value="testing things" />
-				<input type="button" value="Graph" id="startGraphing" class="notClicked" hidden />
+				<row
+					><input type="button" value="Graph" id="startGraphing" class="notClicked" />
+					<input type="button" value="Bar" id="barGraphing" class="notClicked" />
+					<input type="button" value="Pie" id="pieGraphing" class="notClicked" />
+					<input type="button" value="Scatter" id="catterGraphing" class="notClicked" />
+				</row>
 			</div>
 			<br />
 			<div id="selectionInterface" style="text-align: center" hidden>
@@ -84,6 +118,8 @@
 					<div id="graphHeaders"></div>
 				</div>
 				<div style="clear: both"></div>
+
+				<canvas id="Chart" width="400" height="200"></canvas>
 			</div>
 		</div>
 	</body>
@@ -100,12 +136,11 @@
 
 	const createChart = (data, labels, title) => {
 		const ctx = document.getElementById("chartCanvas").getContext("2d");
-		new Chart(ctx, {
+		let myChart = new Chart(ctx, {
 			type: "line", // Change this to the desired chart type (e.g., 'bar', 'pie', etc.)
 			data: {
 				labels: labels,
 				datasets: data,
-				fill: false,
 			},
 			options: {
 				title: {
@@ -114,6 +149,82 @@
 				},
 			},
 		});
+
+		myChart.data.datasets[0].backgroundColor = "rgba(255, 99, 132, 0.5)"; // Fill color
+		myChart.data.datasets[0].borderColor = "rgba(255, 99, 132, 1)";
+		myChart.data.datasets[0].fill = false; // Border color
+
+		// Update the chart to reflect the changes
+		myChart.update();
+	};
+
+	const createBarChart = (data, labels, title) => {
+		const ctx = document.getElementById("chartCanvas").getContext("2d");
+		const myChart = new Chart(ctx, {
+			type: "pie", // Set the chart type to "bar" for a bar chart
+			data: {
+				labels: labels,
+				datasets: data,
+			},
+			options: {
+				title: {
+					display: true,
+					text: title,
+				},
+			},
+		});
+
+		myChart.data.datasets[0].backgroundColor = "rgba(255, 99, 132, 0.5)"; // Fill color
+		myChart.data.datasets[0].borderColor = "rgba(255, 99, 132, 1)";
+
+		// Update the chart to reflect the changes
+		myChart.update();
+	};
+
+	const createPieChart = (data, labels, title) => {
+		const ctx = document.getElementById("chartCanvas").getContext("2d");
+		const myChart = new Chart(ctx, {
+			type: "pie", // Set the chart type to "pie" for a pie chart
+			data: {
+				labels: labels,
+				datasets: data,
+			},
+			options: {
+				title: {
+					display: true,
+					text: title,
+				},
+			},
+		});
+
+		myChart.data.datasets[0].backgroundColor = "rgba(255, 99, 132, 0.5)"; // Fill color
+		myChart.data.datasets[0].borderColor = "rgba(255, 99, 132, 1)";
+
+		// Update the chart to reflect the changes
+		myChart.update();
+	};
+
+	const createScatterChart = (data, labels, title) => {
+		const ctx = document.getElementById("chartCanvas").getContext("2d");
+		const myChart = new Chart(ctx, {
+			type: "scatter", // Set the chart type to "pie" for a pie chart
+			data: {
+				labels: labels,
+				datasets: data,
+			},
+			options: {
+				title: {
+					display: true,
+					text: title,
+				},
+			},
+		});
+
+		myChart.data.datasets[0].backgroundColor = "rgba(255, 99, 132, 0.5)"; // Fill color
+		myChart.data.datasets[0].borderColor = "rgba(255, 99, 132, 1)";
+
+		// Update the chart to reflect the changes
+		myChart.update();
 	};
 
 	const processData = (rows) => {
@@ -177,24 +288,28 @@
 		return traces;
 	};
 
-	const makePlot = (input) => {
-		// Remove any padding, scrolling, or margin on the body tag
+	const makePlot = (input, chartType) => {
 		document.querySelector("body").style = "margin: 0; padding: 0; overflow: hidden;";
-		// Hide the interface and show the graph
 		hide(document.getElementById("interface"));
 		show(document.getElementById("chartCanvas"));
 
 		d3.csv(input, (rows) => {
-			const traces = processData(rows);
-			// Extract x and y values from processedData
+			const traces = processData(rows, labels);
 			const labels = traces[0].x;
 			const chartData = traces.map((dataset) => ({
 				label: dataset.label,
 				data: dataset.y,
 			}));
 
-			// Create the Chart.js chart
-			createChart(chartData, labels, "Chart Title");
+			if (chartType === "line") {
+				createChart(chartData, labels, "Line Chart Title");
+			} else if (chartType === "bar") {
+				createBarChart(chartData, labels, "Bar Chart Title");
+			} else if (chartType === "pie") {
+				createPieChart(chartData, labels, "Pie Chart Title");
+			} else if (chartType === "scatter") {
+				createScatterChart(chartData, "Scatter Chart Title");
+			}
 		});
 	};
 
@@ -202,43 +317,129 @@
 		show(document.getElementById("interface"));
 		const docPicker = document.getElementById("docPicker");
 		const graphButton = document.getElementById("startGraphing");
+		const barButton = document.getElementById("barGraphing");
+		const pieButton = document.getElementById("pieGraphing");
+		const scatterButton = document.getElementById("catterGraphing");
 
 		let clicked = false;
+		let barClicked = false;
+		let pieClicked = false;
+		let scatterClicked = false;
+
 		graphButton.addEventListener("mousedown", (event) => {
 			event.target.classList.add("clicked");
 			event.target.classList.remove("notClicked");
-
 			clicked = true;
+			barClicked = false;
+			pieClicked = false;
+			scatterClicked = false;
+		});
+
+		barButton.addEventListener("mousedown", (event) => {
+			event.target.classList.add("clicked");
+			event.target.classList.remove("notClicked");
+			barClicked = true;
+			clicked = false;
+			pieClicked = false;
+			scatterClicked = false;
+		});
+
+		pieButton.addEventListener("mousedown", (event) => {
+			event.target.classList.add("clicked");
+			event.target.classList.remove("notClicked");
+			pieClicked = true;
+			clicked = false;
+			barClicked = false;
+			scatterClicked = false;
+		});
+
+		scatterButton.addEventListener("mousedown", (event) => {
+			event.target.classList.add("clicked");
+			event.target.classList.remove("notClicked");
+			scatterClicked = true;
+			clicked = false;
+			barClicked = false;
+			pieClicked = false;
 		});
 
 		const resetClick = (event) => {
 			if (clicked) {
-				event;
 				event.target.classList.add("notClicked");
 				event.target.classList.remove("clicked");
-
-				// Use the processed data to create the chart
 				const fileList = docPicker.files;
 				const file = fileList[fileList.length - 1];
 
 				const fileReader = new FileReader();
 				fileReader.addEventListener("load", (event) => {
-					makePlot(event.target.result);
+					makePlot(event.target.result, "line");
 				});
 
 				fileReader.readAsDataURL(file);
-
 				clicked = false;
+			} else if (barClicked) {
+				event.target.classList.add("notClicked");
+				event.target.classList.remove("clicked");
+				const fileList = docPicker.files;
+				const file = fileList[fileList.length - 1];
+
+				const fileReader = new FileReader();
+				fileReader.addEventListener("load", (event) => {
+					makePlot(event.target.result, "bar");
+				});
+
+				fileReader.readAsDataURL(file);
+				barClicked = false;
+			} else if (pieClicked) {
+				event.target.classList.add("notClicked");
+				event.target.classList.remove("clicked");
+				const fileList = docPicker.files;
+				const file = fileList[fileList.length - 1];
+
+				const fileReader = new FileReader();
+				fileReader.addEventListener("load", (event) => {
+					makePlot(event.target.result, "pie");
+				});
+
+				fileReader.readAsDataURL(file);
+				pieClicked = false;
+			} else if (scatterClicked) {
+				event.target.classList.add("notClicked");
+				event.target.classList.remove("clicked");
+				const fileList = docPicker.files;
+				const file = fileList[fileList.length - 1];
+
+				const fileReader = new FileReader();
+				fileReader.addEventListener("load", (event) => {
+					makePlot(event.target.result, "scatter");
+				});
+
+				fileReader.readAsDataURL(file);
+				scatterClicked = false;
 			}
 		};
 
 		graphButton.addEventListener("mouseup", resetClick);
 		graphButton.addEventListener("mouseout", resetClick);
 
+		barButton.addEventListener("mouseup", resetClick);
+		barButton.addEventListener("mouseout", resetClick);
+
+		pieButton.addEventListener("mouseup", resetClick);
+		pieButton.addEventListener("mouseout", resetClick);
+
+		scatterButton.addEventListener("mouseup", resetClick);
+		scatterButton.addEventListener("mouseout", resetClick);
+
 		docPicker.addEventListener("change", (event) => {
 			show(document.getElementById("selectionInterface"));
 			show(document.getElementById("startGraphing"));
+			show(document.getElementById("barGraphing"));
+			show(document.getElementById("pieGraphing"));
+			show(document.getElementById("catterGraphing"));
 			document.getElementById("startGraphing").style.display = "block";
+			document.getElementById("barGraphing").style.display = "block";
+			document.getElementById("pieGraphing").style.display = "block";
+			document.getElementById("catterGraphing").style.display = "block";
 
 			const fileList = event.target.files;
 			const file = fileList[fileList.length - 1];
@@ -273,3 +474,4 @@
 		});
 	};
 </script>
+<script src="main1.js"></script>
