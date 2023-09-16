@@ -105,7 +105,7 @@
 					><input type="button" value="Graph" id="startGraphing" class="notClicked" />
 					<input type="button" value="Bar" id="barGraphing" class="notClicked" />
 					<input type="button" value="Pie" id="pieGraphing" class="notClicked" />
-					<input type="button" value="scatter" id="scatterGraphing" class="notClicked" />
+					<input type="button" value="Scatter" id="scatterGraphing" class="notClicked" />
 				</row>
 			</div>
 			<br />
@@ -205,7 +205,7 @@
 		myChart.update();
 	};
 
-const createScatterChart = (data, title = '') => {
+const createScatterChart = (data, title) => {
     var layout = {
         width: window.innerWidth,
         height: window.innerHeight,
@@ -296,7 +296,7 @@ const createScatterChart = (data, title = '') => {
 			} else if (chartType === "pie") {
 				createPieChart(chartData, labels, "Pie Chart Title");
 			} else if (chartType === "scatter") {
-				createScatterChart(traces);
+				createScatterChart(traces, 'Scatter Chart Title');
 			}
 		});
 	};
