@@ -8,6 +8,7 @@
 		<!-- Include Chart.js library -->
 		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 		<script src="https://d3js.org/d3.v4.min.js"></script>
+		<script src="https://cdn.plot.ly/plotly-2.26.0.min.js" charset="utf-8"></script>
 		<link ref="stylesheet" href="./style.css" />
 	</head>
 	<body>
@@ -161,7 +162,7 @@
 	const createBarChart = (data, labels, title) => {
 		const ctx = document.getElementById("chartCanvas").getContext("2d");
 		const myChart = new Chart(ctx, {
-			type: "pie", // Set the chart type to "bar" for a bar chart
+			type: "bar", // Set the chart type to "bar" for a bar chart
 			data: {
 				labels: labels,
 				datasets: data,
@@ -204,28 +205,15 @@
 		myChart.update();
 	};
 
-	const createScatterChart = (data, labels, title) => {
-		const ctx = document.getElementById("chartCanvas").getContext("2d");
-		const myChart = new Chart(ctx, {
-			type: "scatter", // Set the chart type to "pie" for a pie chart
-			data: {
-				labels: labels,
-				datasets: data,
-			},
-			options: {
-				title: {
-					display: true,
-					text: title,
-				},
-			},
-		});
+const createScatterChart = (data, title = '') => {
+    var layout = {
+        width: window.innerWidth,
+        height: window.innerHeight,
+        title,
+    };
 
-		myChart.data.datasets[0].backgroundColor = "rgba(255, 99, 132, 0.5)"; // Fill color
-		myChart.data.datasets[0].borderColor = "rgba(255, 99, 132, 1)";
-
-		// Update the chart to reflect the changes
-		myChart.update();
-	};
+    Plotly.newPlot('chartCanvas', data, layout);
+};
 
 	const processData = (rows) => {
 		const x = [],
