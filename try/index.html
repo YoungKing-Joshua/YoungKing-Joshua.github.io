@@ -296,7 +296,7 @@ const createScatterChart = (data, title = '') => {
 			} else if (chartType === "pie") {
 				createPieChart(chartData, labels, "Pie Chart Title");
 			} else if (chartType === "scatter") {
-				createScatterChart(chartData, "Scatter Chart Title");
+				createScatterChart(traces);
 			}
 		});
 	};
