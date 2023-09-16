@@ -1,464 +1,561 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Graphing Stuff</title>
-		<!-- Include Chart.js library -->
-		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-		<script src="https://d3js.org/d3.v4.min.js"></script>
-		<script src="https://cdn.plot.ly/plotly-2.26.0.min.js" charset="utf-8"></script>
-		<link ref="stylesheet" href="./style.css" />
-	</head>
-	<body>
-		<style>
-			body {
-				font-size: 1.25em;
-			}
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Graphing Stuff</title>
+    <!-- Include Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.26.0.min.js" charset="utf-8"></script>
+    <link ref="stylesheet" href="./style.css" />
+</head>
+<body>
+<style>
+    body {
+        font-size: 1.25em;
+    }
 
-			input[type="file"]::file-selector-button {
-				display: none;
-			}
+    input[type="file"]::file-selector-button {
+        display: none;
+    }
 
-			input[type="file"]:: {
-				display: none;
-			}
+    input[type="file"]:: {
+        display: none;
+    }
 
-			input[type="file"] {
-				border: 1px solid black;
-				padding: 100px;
-				border-radius: 10px;
-				transition: 250ms;
-				background-color: lightgray;
-				cursor: pointer;
-			}
+    input[type="file"] {
+        border: 1px solid black;
+        padding: 100px;
+        border-radius: 10px;
+        transition: 250ms;
+        background-color: lightgray;
+        cursor: pointer;
+    }
 
-			input[type="file"]:hover {
-				background-color: gray;
-			}
+    input[type="file"]:hover {
+        background-color: gray;
+    }
 
-			#startGraphing {
-				cursor: pointer;
-				width: 150px;
-				height: 50px;
-				border-radius: 8px;
-				border: 1px solid gray;
-				margin-left: 50%;
-				margin-top: 10px;
-			}
+    #startGraphing {
+        cursor: pointer;
+        width: 150px;
+        height: 50px;
+        border-radius: 8px;
+        border: 1px solid gray;
+        margin-left: 50%;
+        margin-top: 10px;
+    }
 
-			#barGraphing {
-				cursor: pointer;
-				width: 150px;
-				height: 50px;
-				border-radius: 8px;
-				border: 1px solid gray;
-				margin-left: 50%;
-				margin-top: 10px;
-			}
+    #barGraphing {
+        cursor: pointer;
+        width: 150px;
+        height: 50px;
+        border-radius: 8px;
+        border: 1px solid gray;
+        margin-left: 50%;
+        margin-top: 10px;
+    }
 
-			#pieGraphing {
-				cursor: pointer;
-				width: 150px;
-				height: 50px;
-				border-radius: 8px;
-				border: 1px solid gray;
-				margin-left: 50%;
-				margin-top: 10px;
-			}
+    #pieGraphing {
+        cursor: pointer;
+        width: 150px;
+        height: 50px;
+        border-radius: 8px;
+        border: 1px solid gray;
+        margin-left: 50%;
+        margin-top: 10px;
+    }
 
-			#scatterGraphing {
-				cursor: pointer;
-				width: 150px;
-				height: 50px;
-				border-radius: 8px;
-				border: 1px solid gray;
-				margin-left: 50%;
-				margin-top: 10px;
-			}
-			.notClicked {
-				transform: translate(calc(-50% - 10px));
-				box-shadow: 5px 5px 0px 0px black;
-			}
+    #scatterGraphing {
+        cursor: pointer;
+        width: 150px;
+        height: 50px;
+        border-radius: 8px;
+        border: 1px solid gray;
+        margin-left: 50%;
+        margin-top: 10px;
+    }
 
-			.clicked {
-				box-shadow: 2px 2px 0px 0px black;
-				transform: translate(calc(5px - 50% - 10px), 5px);
-			}
+    .notClicked {
+        transform: translate(calc(-50% - 10px));
+        box-shadow: 5px 5px 0px 0px black;
+    }
 
-			#interface {
-				margin: auto;
-				width: 50%;
-				padding: 10px;
-				border-radius: 10px;
-			}
-		</style>
-		<!-- Use a canvas element for Chart.js -->
-		<canvas id="chartCanvas" width="400" height="200" hidden></canvas>
+    .clicked {
+        box-shadow: 2px 2px 0px 0px black;
+        transform: translate(calc(5px - 50% - 10px), 5px);
+    }
 
-		<div id="interface">
-			<div id="inputInterface" style="text-align: center">
-				<label for="docPicker"><h3>Click or drag to upload a .csv file</h3></label>
-				<input type="file" id="docPicker" accept=".csv" value="testing things" />
-				<row
-					><input type="button" value="Graph" id="startGraphing" class="notClicked" />
-					<input type="button" value="Bar" id="barGraphing" class="notClicked" />
-					<input type="button" value="Pie" id="pieGraphing" class="notClicked" />
-					<input type="button" value="Scatter" id="scatterGraphing" class="notClicked" />
-				</row>
-			</div>
-			<br />
-			<div id="selectionInterface" style="text-align: center" hidden>
-				<div style="margin: 10px; display: inline-block; text-align: left; margin-right: 100px">
-					<h3>Choose x variable</h3>
-					<div id="xAxisVariable"></div>
-				</div>
-				<div style="margin: 10px; display: inline-block; text-align: left">
-					<h3>Choose y variables</h3>
-					<div id="graphHeaders"></div>
-				</div>
-				<div style="clear: both"></div>
+    #interface {
+        margin: auto;
+        width: 50%;
+        padding: 10px;
+        border-radius: 10px;
+    }
+</style>
+<!-- Use a canvas element for Chart.js -->
+<canvas id="chartCanvas" width="400" height="200" hidden></canvas>
 
-				<canvas id="Chart" width="400" height="200"></canvas>
-			</div>
-		</div>
-	</body>
-</html>
+<div id="interface">
+    <div id="inputInterface" style="text-align: center">
+        <label for="docPicker"><h3>Click or drag to upload a .csv file</h3></label>
+        <input type="file" id="docPicker" accept=".csv" value="testing things" />
+        <row
+            ><input type="button" value="Graph" id="startGraphing" class="notClicked" />
+            <input type="button" value="Bar" id="barGraphing" class="notClicked" />
+            <input type="button" value="Pie" id="pieGraphing" class="notClicked" />
+            <input type="button" value="Scatter" id="scatterGraphing" class="notClicked" />
+        </row>
+    </div>
+    <br />
+    <div id="selectionInterface" style="text-align: center" hidden>
+        <div style="margin: 10px; display: inline-block; text-align: left; margin-right: 100px">
+            <h3>Choose x variable</h3>
+            <div id="xAxisVariable"></div>
+        </div>
+        <div style="margin: 10px; display: inline-block; text-align: left">
+            <h3>Choose y variables</h3>
+            <div id="graphHeaders"></div>
+        </div>
+        <div style="clear: both"></div>
+
+        <canvas id="Chart" width="400" height="200"></canvas>
+    </div>
+    <div id="graphHolder" style="text-align: center" hidden></div>
+</div>
 
 <script>
-	const hide = (element) => {
-		element.setAttribute("hidden", "");
-	};
-
-	const show = (element) => {
-		element.removeAttribute("hidden");
-	};
-
-	const createChart = (data, labels, title) => {
-		const ctx = document.getElementById("chartCanvas").getContext("2d");
-		let myChart = new Chart(ctx, {
-			type: "line", // Change this to the desired chart type (e.g., 'bar', 'pie', etc.)
-			data: {
-				labels: labels,
-				datasets: data,
-			},
-			options: {
-				title: {
-					display: true,
-					text: title,
-				},
-			},
-		});
-
-		myChart.data.datasets[0].backgroundColor = "rgba(255, 99, 132, 0.5)"; // Fill color
-		myChart.data.datasets[0].borderColor = "rgba(255, 99, 132, 1)";
-		myChart.data.datasets[0].fill = false; // Border color
-
-		// Update the chart to reflect the changes
-		myChart.update();
-	};
-
-	const createBarChart = (data, labels, title) => {
-		const ctx = document.getElementById("chartCanvas").getContext("2d");
-		const myChart = new Chart(ctx, {
-			type: "bar", // Set the chart type to "bar" for a bar chart
-			data: {
-				labels: labels,
-				datasets: data,
-			},
-			options: {
-				title: {
-					display: true,
-					text: title,
-				},
-			},
-		});
-
-		myChart.data.datasets[0].backgroundColor = "rgba(255, 99, 132, 0.5)"; // Fill color
-		myChart.data.datasets[0].borderColor = "rgba(255, 99, 132, 1)";
-
-		// Update the chart to reflect the changes
-		myChart.update();
-	};
-
-	const createPieChart = (data, labels, title) => {
-		const ctx = document.getElementById("chartCanvas").getContext("2d");
-		const myChart = new Chart(ctx, {
-			type: "pie", // Set the chart type to "pie" for a pie chart
-			data: {
-				labels: labels,
-				datasets: data,
-			},
-			options: {
-				title: {
-					display: true,
-					text: title,
-				},
-			},
-		});
-
-		myChart.data.datasets[0].backgroundColor = "rgba(255, 99, 132, 0.5)"; // Fill color
-		myChart.data.datasets[0].borderColor = "rgba(255, 99, 132, 1)";
-
-		// Update the chart to reflect the changes
-		myChart.update();
-	};
-
-const createScatterChart = (data, title) => {
-    var layout = {
-        width: window.innerWidth,
-        height: window.innerHeight,
-        title,
+    const hide = (element) => {
+        element.setAttribute("hidden", "");
     };
 
-    Plotly.newPlot('chartCanvas', data, layout);
-};
+    const show = (element) => {
+        element.removeAttribute("hidden");
+    };
 
-	const processData = (rows) => {
-		const x = [],
-			text = [];
+    const createChart = (data, labels, title) => {
+        const ctx = document.getElementById("chartCanvas").getContext("2d");
+        let myChart = new Chart(ctx, {
+            type: "line", // Change this to the desired chart type (e.g., 'bar', 'pie', etc.)
+            data: {
+                labels: labels,
+                datasets: data,
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: title,
+                },
+            },
+        });
 
-		// Sort the data by the selected x value
-		const xVariableElement = [...document.querySelectorAll('input[name="xAxisChoice"]')].find(
-			(el) => el.checked
-		);
-		const xVariable = xVariableElement?.dataset?.header;
-		if (xVariable === undefined) {
-			alert("You have to select an x-axis for this to work");
-			throw new Error("Super smart user is trying to graph without selecting an x value");
-		}
-		const sortedRows = rows.sort((a, b) => a[xVariable] - b[xVariable]);
+        myChart.data.datasets[0].backgroundColor = "rgba(255, 99, 132, 0.5)"; // Fill color
+        myChart.data.datasets[0].borderColor = "rgba(255, 99, 132, 1)";
+        myChart.data.datasets[0].fill = false; // Border color
 
-		const checkboxes = [...document.querySelectorAll('input[type="checkbox"]')];
-		const allYs = {};
-		let userChoseAYValue = false;
-		checkboxes.forEach((checkbox) => {
-			const { checked, name } = checkbox;
-			if (checked) {
-				allYs[name] = [];
-				userChoseAYValue = true;
-			}
-		});
+        // Update the chart to reflect the changes
+        myChart.update();
+    };
 
-		if (!userChoseAYValue) {
-			alert("You have to select values for the y-axis for this to work");
-			throw new Error("Super smart user is trying to graph without selecting any y values");
-		}
+    const createBarChart = (data, labels, title) => {
+        const ctx = document.getElementById("chartCanvas").getContext("2d");
+        const myChart = new Chart(ctx, {
+            type: "bar", // Set the chart type to "bar" for a bar chart
+            data: {
+                labels: labels,
+                datasets: data,
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: title,
+                },
+            },
+        });
 
-		// Clear the interface now that we've graphed
-		document.getElementById("interface").innerHTML = "";
+        myChart.data.datasets[0].backgroundColor = "rgba(255, 99, 132, 0.5)"; // Fill color
+        myChart.data.datasets[0].borderColor = "rgba(255, 99, 132, 1)";
 
-		sortedRows.forEach((row) => {
-			x.push(row[xVariable]);
+        // Update the chart to reflect the changes
+        myChart.update();
+    };
 
-			Object.keys(allYs).forEach((header) => {
-				allYs[header].push(row[header]);
-			});
+    const createPieChart = (data, labels, title) => {
+        const ctx = document.getElementById("chartCanvas").getContext("2d");
+        const myChart = new Chart(ctx, {
+            type: "pie", // Set the chart type to "pie" for a pie chart
+            data: {
+                labels: labels,
+                datasets: data,
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: title,
+                },
+            },
+        });
 
-			if (Object.prototype.hasOwnProperty.call(row, "day_time")) {
-				const date = new Date(parseFloat(row.day_time));
-				text.push(date.toLocaleString());
-			} else {
-				text.push("");
-			}
-		});
+        myChart.data.datasets[0].backgroundColor = "rgba(255, 99, 132, 0.5)"; // Fill color
+        myChart.data.datasets[0].borderColor = "rgba(255, 99, 132, 1)";
 
-		const traces = Object.keys(allYs).map((yLabel) => ({
-			x,
-			y: allYs[yLabel],
-			text,
-			type: "scatter",
-			mode: "markers",
-			label: yLabel,
-		}));
+        // Update the chart to reflect the changes
+        myChart.update();
+    };
 
-		return traces;
-	};
+    const processData = (rows) => {
+        const x = [],
+            text = [];
 
-	const makePlot = (input, chartType) => {
-		document.querySelector("body").style = "margin: 0; padding: 0; overflow: hidden;";
-		hide(document.getElementById("interface"));
-		show(document.getElementById("chartCanvas"));
+        // Sort the data by the selected x value
+        const xVariableElement = [...document.querySelectorAll('input[name="xAxisChoice"]')].find(
+            (el) => el.checked
+        );
+        const xVariable = xVariableElement?.dataset?.header;
+        if (xVariable === undefined) {
+            alert("You have to select an x-axis for this to work");
+            throw new Error("Super smart user is trying to graph without selecting an x value");
+        }
+        const sortedRows = rows.sort((a, b) => a[xVariable] - b[xVariable]);
 
-		d3.csv(input, (rows) => {
-			const traces = processData(rows);
-			const labels = traces[0].x;
-			const chartData = traces.map((dataset) => ({
-				label: dataset.label,
-				data: dataset.y,
-			}));
+        const checkboxes = [...document.querySelectorAll('input[type="checkbox"]')];
+        const allYs = {};
+        let userChoseAYValue = false;
+        checkboxes.forEach((checkbox) => {
+            const { checked, name } = checkbox;
+            if (checked) {
+                allYs[name] = [];
+                userChoseAYValue = true;
+            }
+        });
 
-			if (chartType === "line") {
-				createChart(chartData, labels, "Line Chart Title");
-			} else if (chartType === "bar") {
-				createBarChart(chartData, labels, "Bar Chart Title");
-			} else if (chartType === "pie") {
-				createPieChart(chartData, labels, "Pie Chart Title");
-			} else if (chartType === "scatter") {
-				createScatterChart(traces, 'Scatter Chart Title');
-			}
-		});
-	};
+        if (!userChoseAYValue) {
+            alert("You have to select values for the y-axis for this to work");
+            throw new Error("Super smart user is trying to graph without selecting any y values");
+        }
 
-	window.onload = () => {
-		show(document.getElementById("interface"));
-		const docPicker = document.getElementById("docPicker");
-		const graphButton = document.getElementById("startGraphing");
-		const barButton = document.getElementById("barGraphing");
-		const pieButton = document.getElementById("pieGraphing");
-		const scatterButton = document.getElementById("scatterGraphing");
+        // Clear the interface now that we've graphed
+        document.getElementById("interface").innerHTML = "";
 
-		let clicked = false;
-		let barClicked = false;
-		let pieClicked = false;
-		let scatterClicked = false;
+        sortedRows.forEach((row) => {
+            x.push(row[xVariable]);
 
-		graphButton.addEventListener("mousedown", (event) => {
-			event.target.classList.add("clicked");
-			event.target.classList.remove("notClicked");
-			clicked = true;
-			barClicked = false;
-			pieClicked = false;
-			scatterClicked = false;
-		});
+            Object.keys(allYs).forEach((header) => {
+                allYs[header].push(row[header]);
+            });
 
-		barButton.addEventListener("mousedown", (event) => {
-			event.target.classList.add("clicked");
-			event.target.classList.remove("notClicked");
-			barClicked = true;
-			clicked = false;
-			pieClicked = false;
-			scatterClicked = false;
-		});
+            if (Object.prototype.hasOwnProperty.call(row, "day_time")) {
+                const date = new Date(parseFloat(row.day_time));
+                text.push(date.toLocaleString());
+            } else {
+                text.push("");
+            }
+        });
 
-		pieButton.addEventListener("mousedown", (event) => {
-			event.target.classList.add("clicked");
-			event.target.classList.remove("notClicked");
-			pieClicked = true;
-			clicked = false;
-			barClicked = false;
-			scatterClicked = false;
-		});
+        const traces = Object.keys(allYs).map((yLabel) => ({
+            x,
+            y: allYs[yLabel],
+            text,
+            type: "scatter",
+            mode: "markers",
+            label: yLabel,
+        }));
 
-		scatterButton.addEventListener("mousedown", (event) => {
-			event.target.classList.add("clicked");
-			event.target.classList.remove("notClicked");
-			scatterClicked = true;
-			clicked = false;
-			barClicked = false;
-			pieClicked = false;
-		});
+        return traces;
+    };
 
-		const resetClick = (event) => {
-			if (clicked) {
-				event.target.classList.add("notClicked");
-				event.target.classList.remove("clicked");
-				const fileList = docPicker.files;
-				const file = fileList[fileList.length - 1];
+    const makePlot = (input, chartType) => {
+        document.querySelector("body").style = "margin: 0; padding: 0; overflow: hidden;";
+        hide(document.getElementById("interface"));
+        show(document.getElementById("chartCanvas"));
 
-				const fileReader = new FileReader();
-				fileReader.addEventListener("load", (event) => {
-					makePlot(event.target.result, "line");
-				});
+        d3.csv(input, (rows) => {
+            const traces = processData(rows);
+            const labels = traces[0].x;
+            const chartData = traces.map((dataset) => ({
+                label: dataset.label,
+                data: dataset.y,
+            }));
 
-				fileReader.readAsDataURL(file);
-				clicked = false;
-			} else if (barClicked) {
-				event.target.classList.add("notClicked");
-				event.target.classList.remove("clicked");
-				const fileList = docPicker.files;
-				const file = fileList[fileList.length - 1];
+            if (chartType === "line") {
+                createChart(chartData, labels, "Line Chart Title");
+            } else if (chartType === "bar") {
+                createBarChart(chartData, labels, "Bar Chart Title");
+            } else if (chartType === "pie") {
+                createPieChart(chartData, labels, "Pie Chart Title");
+            }
+        });
+    };
 
-				const fileReader = new FileReader();
-				fileReader.addEventListener("load", (event) => {
-					makePlot(event.target.result, "bar");
-				});
+    const hide1 = (element) =>
+    {
+        element.setAttribute('hidden', '');
+    };
 
-				fileReader.readAsDataURL(file);
-				barClicked = false;
-			} else if (pieClicked) {
-				event.target.classList.add("notClicked");
-				event.target.classList.remove("clicked");
-				const fileList = docPicker.files;
-				const file = fileList[fileList.length - 1];
+    const show1 = (element) =>
+    {
+        element.removeAttribute('hidden');
+    };
 
-				const fileReader = new FileReader();
-				fileReader.addEventListener("load", (event) => {
-					makePlot(event.target.result, "pie");
-				});
+    const plotSomeData = (data, title = '') =>
+    {
+        var layout = {
+            width: window.innerWidth,
+            height: window.innerHeight,
+            title,
+        };
 
-				fileReader.readAsDataURL(file);
-				pieClicked = false;
-			} else if (scatterClicked) {
-				event.target.classList.add("notClicked");
-				event.target.classList.remove("clicked");
-				const fileList = docPicker.files;
-				const file = fileList[fileList.length - 1];
+        Plotly.newPlot('graphHolder', data, layout);
+    };
 
-				const fileReader = new FileReader();
-				fileReader.addEventListener("load", (event) => {
-					makePlot(event.target.result, "scatter");
-				});
+    const processData1 = (rows) =>
+    {
+        const x = [], text = [];
 
-				fileReader.readAsDataURL(file);
-				scatterClicked = false;
-			}
-		};
+        // sort the data by provided x value
+        const xVariableElement = [...document.querySelectorAll('input[name="xAxisChoice"]')]?.find((el) => el.checked);
+        const xVariable = xVariableElement?.dataset?.header;
+        if (xVariable === undefined)
+        {
+            alert('You have to select a xAxis for this to work');
+            throw new Error('Super smart user is trying to graph without selecting an x value');
+        }
+        const sortedRows = rows.sort((a, b) => a[xVariable] - b[xVariable]);
 
-		graphButton.addEventListener("mouseup", resetClick);
-		graphButton.addEventListener("mouseout", resetClick);
+        const checkboxes = [...document.querySelectorAll('input[type="checkbox"]')];
+        const allYs = {};
+        let userChoseAYValue = false;
+        checkboxes.forEach((checkbox) =>
+        {
+            const { checked, name } = checkbox;
+            if (checked)
+            {
+                allYs[name] = [];
+                userChoseAYValue = true;
+            }
+        });
 
-		barButton.addEventListener("mouseup", resetClick);
-		barButton.addEventListener("mouseout", resetClick);
+        if (!userChoseAYValue)
+        {
+            alert('You have to select values for the yAxis for this to work');
+            throw new Error('Super smart user is trying to graph without selecting any y values');
+        }
 
-		pieButton.addEventListener("mouseup", resetClick);
-		pieButton.addEventListener("mouseout", resetClick);
+        // clear the interface now that we've graphed
+        document.getElementById('interface').innerHTML = "";
 
-		scatterButton.addEventListener("mouseup", resetClick);
-		scatterButton.addEventListener("mouseout", resetClick);
+        sortedRows.forEach((row) =>
+        {
+            x.push(row[xVariable]);
 
-		docPicker.addEventListener("change", (event) => {
-			show(document.getElementById("selectionInterface"));
-			show(document.getElementById("startGraphing"));
-			show(document.getElementById("barGraphing"));
-			show(document.getElementById("pieGraphing"));
-			show(document.getElementById("scatterGraphing"));
-			document.getElementById("startGraphing").style.display = "block";
-			document.getElementById("barGraphing").style.display = "block";
-			document.getElementById("pieGraphing").style.display = "block";
-			document.getElementById("scatterGraphing").style.display = "block";
+            Object.keys(allYs).forEach((header) =>
+            {
+                allYs[header].push(row[header]);
+            });
 
-			const fileList = event.target.files;
-			const file = fileList[fileList.length - 1];
+            if (Object.prototype.hasOwnProperty.call(row, 'day_time'))
+            {
+                const date = new Date(parseFloat(row.day_time));
+                text.push(date.toLocaleString());
+            } else
+            {
+                text.push('');
+            }
+        });
 
-			// Read data and display the headers so the user can choose what to display
-			const fileReader = new FileReader();
-			fileReader.addEventListener("load", (event) => {
-				d3.csv(event.target.result, (data) => {
-					if (data.length) {
-						const headers = Object.keys(data[0]);
-						// Display as a checkbox list of which headers to choose
-						const headersHTML = headers.map((header) => {
-							return `<label for="${header}-header">
+        const traces = Object.keys(allYs).map((yLabel) => ({
+            x,
+            y: allYs[yLabel],
+            text,
+            type: 'scatter',
+            mode: 'markers',
+            name: yLabel,
+        }));
+
+        return traces;
+    };
+
+    const makePlot1 = (input) =>
+    {
+        // remove any padding, scrolling, or margin on the body tag
+        document.querySelector('body').style = "margin: 0; padding: 0; overflow: hidden;";
+        // hide1 the interface and show1 the graph
+        hide1(document.getElementById('interface'));
+        show1(document.getElementById('graphHolder'));
+
+        d3.csv(input, (rows) =>
+        {
+            const traces = processData1(rows);
+            plotSomeData(traces);
+        });
+    };
+
+    window.onload = () =>
+    {
+        show(document.getElementById("interface"));
+        show1(document.getElementById('interface'));
+        const docPicker = document.getElementById("docPicker");
+        const graphButton = document.getElementById("startGraphing");
+        const barButton = document.getElementById("barGraphing");
+        const pieButton = document.getElementById("pieGraphing");
+        const scatterButton = document.getElementById("scatterGraphing");
+
+        let clicked = false;
+        let barClicked = false;
+        let pieClicked = false;
+        let scatterClicked = false;
+
+        graphButton.addEventListener("mousedown", (event) => {
+            event.target.classList.add("clicked");
+            event.target.classList.remove("notClicked");
+            clicked = true;
+            barClicked = false;
+            pieClicked = false;
+            scatterClicked = false;
+        });
+
+        barButton.addEventListener("mousedown", (event) => {
+            event.target.classList.add("clicked");
+            event.target.classList.remove("notClicked");
+            barClicked = true;
+            clicked = false;
+            pieClicked = false;
+            scatterClicked = false;
+        });
+
+        pieButton.addEventListener("mousedown", (event) => {
+            event.target.classList.add("clicked");
+            event.target.classList.remove("notClicked");
+            pieClicked = true;
+            clicked = false;
+            barClicked = false;
+            scatterClicked = false;
+        });
+
+        scatterButton.addEventListener("mousedown", (event) => {
+            event.target.classList.add("clicked");
+            event.target.classList.remove("notClicked");
+            scatterClicked = true;
+            clicked = false;
+            barClicked = false;
+            pieClicked = false;
+        });
+
+        const resetClick = (event) => {
+            if (clicked) {
+                event.target.classList.add("notClicked");
+                event.target.classList.remove("clicked");
+                const fileList = docPicker.files;
+                const file = fileList[fileList.length - 1];
+
+                const fileReader = new FileReader();
+                fileReader.addEventListener("load", (event) => {
+                    if (scatterClicked) {
+                        makePlot1(event.target.result);
+                    } else {
+                        makePlot(event.target.result, "line");
+                    }
+                });
+
+                fileReader.readAsDataURL(file);
+                clicked = false;
+            } else if (barClicked) {
+                event.target.classList.add("notClicked");
+                event.target.classList.remove("clicked");
+                const fileList = docPicker.files;
+                const file = fileList[fileList.length - 1];
+
+                const fileReader = new FileReader();
+                fileReader.addEventListener("load", (event) => {
+                    makePlot(event.target.result, "bar");
+                });
+
+                fileReader.readAsDataURL(file);
+                barClicked = false;
+            } else if (pieClicked) {
+                event.target.classList.add("notClicked");
+                event.target.classList.remove("clicked");
+                const fileList = docPicker.files;
+                const file = fileList[fileList.length - 1];
+
+                const fileReader = new FileReader();
+                fileReader.addEventListener("load", (event) => {
+                    makePlot(event.target.result, "pie");
+                });
+
+                fileReader.readAsDataURL(file);
+                pieClicked = false;
+            } else if (scatterClicked) {
+                event.target.classList.add("notClicked");
+                event.target.classList.remove("clicked");
+                const fileList = docPicker.files;
+                const file = fileList[fileList.length - 1];
+
+                const fileReader = new FileReader();
+                fileReader.addEventListener("load", (event) => {
+                    makePlot1(event.target.result);
+                });
+
+                fileReader.readAsDataURL(file);
+                scatterClicked = false;
+            }
+        };
+
+        graphButton.addEventListener("mouseup", resetClick);
+        graphButton.addEventListener("mouseout", resetClick);
+
+        barButton.addEventListener("mouseup", resetClick);
+        barButton.addEventListener("mouseout", resetClick);
+
+        pieButton.addEventListener("mouseup", resetClick);
+        pieButton.addEventListener("mouseout", resetClick);
+
+        scatterButton.addEventListener("mouseup", resetClick);
+        scatterButton.addEventListener("mouseout", resetClick);
+
+        docPicker.addEventListener("change", (event) => {
+            show(document.getElementById("selectionInterface"));
+            show(document.getElementById("startGraphing"));
+            show(document.getElementById("barGraphing"));
+            show(document.getElementById("pieGraphing"));
+            show(document.getElementById("scatterGraphing"));
+            document.getElementById("startGraphing").style.display = "block";
+            document.getElementById("barGraphing").style.display = "block";
+            document.getElementById("pieGraphing").style.display = "block";
+            document.getElementById("scatterGraphing").style.display = "block";
+
+            const fileList = event.target.files;
+            const file = fileList[fileList.length - 1];
+
+            // Read data and display the headers so the user can choose what to display
+            const fileReader = new FileReader();
+            fileReader.addEventListener("load", (event) => {
+                d3.csv(event.target.result, (data) => {
+                    if (data.length) {
+                        const headers = Object.keys(data[0]);
+                        // Display as a checkbox list of which headers to choose
+                        const headersHTML = headers.map((header) => {
+                            return `<label for="${header}-header">
                             <input type="checkbox" id="${header}-header" name="${header}"> ${header}
                         </label>`;
-						});
-						const xAxisVariableHTML = headers.map((header) => {
-							return `<label for="${header}-axis">
+                        });
+                        const xAxisVariableHTML = headers.map((header) => {
+                            return `<label for="${header}-axis">
                             <input type="radio" id="${header}-axis" data-header="${header}" name="xAxisChoice"> ${header}
                         </label>`;
-						});
+                        });
 
-						const graphHeaders = document.getElementById("graphHeaders");
-						const xAxisVariable = document.getElementById("xAxisVariable");
-						graphHeaders.innerHTML = headersHTML.join("<br/>");
-						xAxisVariable.innerHTML = xAxisVariableHTML.join("<br/>");
-					}
-				});
-			});
+                        const graphHeaders = document.getElementById("graphHeaders");
+                        const xAxisVariable = document.getElementById("xAxisVariable");
+                        graphHeaders.innerHTML = headersHTML.join("<br/>");
+                        xAxisVariable.innerHTML = xAxisVariableHTML.join("<br/>");
+                    }
+                });
+            });
 
-			fileReader.readAsDataURL(file);
-		});
-	};
+            fileReader.readAsDataURL(file);
+        });
+    };
 </script>
