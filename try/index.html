@@ -67,7 +67,7 @@
 				margin-top: 10px;
 			}
 
-			#catterGraphing {
+			#scatterGraphing {
 				cursor: pointer;
 				width: 150px;
 				height: 50px;
@@ -104,7 +104,7 @@
 					><input type="button" value="Graph" id="startGraphing" class="notClicked" />
 					<input type="button" value="Bar" id="barGraphing" class="notClicked" />
 					<input type="button" value="Pie" id="pieGraphing" class="notClicked" />
-					<input type="button" value="Scatter" id="catterGraphing" class="notClicked" />
+					<input type="button" value="Scatter" id="scatterGraphing" class="notClicked" />
 				</row>
 			</div>
 			<br />
@@ -294,7 +294,7 @@
 		show(document.getElementById("chartCanvas"));
 
 		d3.csv(input, (rows) => {
-			const traces = processData(rows, labels);
+			const traces = processData(rows);
 			const labels = traces[0].x;
 			const chartData = traces.map((dataset) => ({
 				label: dataset.label,
@@ -319,7 +319,7 @@
 		const graphButton = document.getElementById("startGraphing");
 		const barButton = document.getElementById("barGraphing");
 		const pieButton = document.getElementById("pieGraphing");
-		const scatterButton = document.getElementById("catterGraphing");
+		const scatterButton = document.getElementById("scatterGraphing");
 
 		let clicked = false;
 		let barClicked = false;
@@ -435,11 +435,11 @@
 			show(document.getElementById("startGraphing"));
 			show(document.getElementById("barGraphing"));
 			show(document.getElementById("pieGraphing"));
-			show(document.getElementById("catterGraphing"));
+			show(document.getElementById("scatterGraphing"));
 			document.getElementById("startGraphing").style.display = "block";
 			document.getElementById("barGraphing").style.display = "block";
 			document.getElementById("pieGraphing").style.display = "block";
-			document.getElementById("catterGraphing").style.display = "block";
+			document.getElementById("scatterGraphing").style.display = "block";
 
 			const fileList = event.target.files;
 			const file = fileList[fileList.length - 1];
@@ -474,4 +474,3 @@
 		});
 	};
 </script>
-<script src="main1.js"></script>
