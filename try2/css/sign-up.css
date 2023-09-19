@@ -1,0 +1,199 @@
+/*
+	Styling CSS for the Sign up page. The order of styling for each type of selector follows the 
+	html hierachical structure.
+*/
+
+/********************************** GENERAL SELECTORS ************************/
+body{
+	margin: 0px;
+	text-align: center;
+	}
+	
+	
+h2 { 
+  text-align: center;
+  font-weight: bold;
+	}
+	
+a {
+	text-decoration: none;
+	transition: color 0.3s;
+	}
+		
+a:hover {
+    color: #00b4d8;
+    }
+	
+a:active {
+	color: orange;
+	}
+
+
+.li {
+	list-decoration: none;
+	}
+/******************************* ID SELECTORS **************************/
+
+/* ***** Background for signup page ******* */
+#banner-page-container {
+	background-image: url('../images/data-vis-01.jpg');	
+	background-size: cover; 
+	background-position: center;
+	padding: 6% 20%;
+	margin-top: 4.1%;
+	}
+/* ***** Footer Section ********* */
+#footer-fin {
+	background-color: #055160;
+	margin-bottom: 0px;
+	padding: 3% 2% 1%;
+	font-size: 1rem;
+	color: #fff;
+	}
+
+/****************************** CLASS SELECTORS ****************************/
+/* *** Navbar *** */
+.logo-brand {
+	padding: auto 2%;
+	color: #105d69;
+	text-decoration: none;
+	}
+
+.top-search:focus {
+    box-shadow: 1px 2px 5px  1px rgba(3, 16, 83, 0.2);
+    } 
+	
+.nav-link {
+  list-style: none;
+  display: flex;
+  color: #105d69;
+  }
+  
+.nav-link:hover {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s;
+  color: #00b4d8;
+  }
+
+/* ****** Main Sign -Up Container ******* */
+.signup-container {
+	z-index: 2;
+	background-color: rgba(249, 245, 245, 0.5); 
+	padding:3%;
+	}
+	
+	
+/* *** Form Section *** */
+.form-header {
+	text-align: center;
+	background-color: #105d69;
+	}
+	
+.header-heading {
+	padding: 2%;
+	color: #fff;
+	}	
+	
+.intro-text {
+	color: #015958;
+	margin: 1%;
+	}	
+
+.form-body {
+	font-size: 1.2rem;
+	padding: 3%;
+	z-index: 4;
+	}
+	
+.form-group-container {
+	padding: 3%;
+	}		
+	
+.label-text {
+	color: #031053;
+	font-weight: bold;
+	}
+/* *** Checkboxes *** */
+.visx-checkbox {
+	cursor: pointer;
+	}
+
+.checkmark: {
+	border: 1px solid #ccc; 
+    transition: border-color 0.3s;
+	}
+  
+.choice {
+	text-align: center;
+    cursor: pointer;
+    margin-top: 20px;
+    }
+	
+.choice:hover .checkmark {
+    border-color: #007bff;
+	}
+	
+.check-icon {
+	border-color: #2ca8ff;
+	border-radius: 2%;
+	}
+	
+.fa-brandy:hover {
+	transition: color 0.3s;
+  	color: #2ca8ff;
+	}
+		
+.submit-btn {
+	padding: 10px;
+    border-radius: 8px;
+    background: linear-gradient(#11cdd4, #11999e);
+    color: #EAF6F6;
+	}
+.form-group-btn {
+	padding: 2%;
+	}
+	
+.login-option {
+	padding: 2%;
+	}
+
+/* *** Footer Section *** */
+.social-media {
+	padding:2% 6% 1%;
+	margin: 0 auto;
+	text-align: center;
+	}
+	
+.link-icons {
+	margin: 4px;
+	color: #fff;
+	}
+	
+.footer-links {
+	text-align: center;
+	text-decoration: none;
+	color: #f3f3f3;
+	}
+	
+.fa-brands:hover {
+	transition: color 0.3s;
+  	color: #00b4d8;
+	}
+	
+.privacy-terms-of-use {
+	padding: 5px;
+	color: #f3f3f3;
+	}
+	
+.copyright-comment {
+	padding: 1%;
+	color: #a8b5f8;
+	#8f8f8f
+	}
+
+.footer-end {
+	color: #8f8f8f;
+	margin: 0;
+	padding-bottom: 12px;
+	}

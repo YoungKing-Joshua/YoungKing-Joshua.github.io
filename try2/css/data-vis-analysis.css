@@ -1,0 +1,215 @@
+/*
+	Styling CSS for the Main Page for Data Visualizations. The order of styling for each type of selector follows the 
+	html hierachical structure.
+*/
+
+/********************************** GENERAL SELECTORS ************************/
+body{
+	margin: 0px;
+	text-align: center;
+	}
+
+h2 { 
+  text-align: center;
+  font-weight: bold;
+	}
+	
+h5 {
+	color: #1da2b2;
+	}
+
+h4 {
+	color: #055160;	
+	}
+a {
+	text-decoration: none;
+	transition: color 0.3s;
+	}
+		
+a:hover {
+    color: #00b4d8;
+    }
+	
+a:active {
+	color: red;
+	}
+	
+li {
+	list-decoration: none;
+	}
+
+main {
+    padding: 40px;
+	}
+	
+input[type="file"] {
+    margin-right: 10px;
+    }
+	
+/********************************** ID SELECTORS ************************/
+	/* *** Form IDs *** */
+	#upload-form {
+    align-items: center;
+	margin: 0 auto;
+    }
+	
+/* *** Variable Selection *** */
+#variable-selection-form {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+	}
+
+/* ***** Footer Section ********* */
+#footer-fin {
+	background-color: #055160;
+	margin-bottom: 0px;
+	padding: 3% 2% 1%;
+	font-size: 1rem;
+	color: #fff;
+	}
+	
+/********************************** CLASS SELECTORS ************************/
+/* *** Navbar *** */
+.logo-brand {
+	padding: auto 2%;
+	color: #00b4d8;
+	text-decoration: none;
+	font-weight: bold;
+	}
+.logo-brand:hover {
+	transition: 0.3s;
+	color: #031053;
+	}
+	
+.form-control:focus {
+    box-shadow: 1px 1px 1px  1px rgba(3, 16, 83, 0.5);
+    } 
+	
+.nav-link {
+    list-style: none;
+    display: flex;
+    color: #105d69;
+    }
+    
+.nav-link:hover {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+    color: #00b4d8;
+    }
+	
+/* *** Header heading *** */
+
+.header-section {
+	margin-top: 4.1%;
+	padding: 3%;
+	background-color: #1da2b2;
+	}
+
+.main-heading {
+	color: #fff;
+	}
+
+
+/* *** Upload Section *** */
+.upload-section, .visualization-section {
+    margin-bottom: 40px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f4f4f4;
+    }
+	
+.upload-section h2, .visualization-section h2 {
+    margin-bottom: 20px;
+    }
+
+.upload-button {
+    padding: 8px 16px;
+    background-color: #1da2b2;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    }
+	
+/* *** Variable Selection Section *** */
+.variable-sel-x-y {
+	margin-bottom: 40px;
+	padding: 20px;
+	border: 1px solid #ccc;
+	background-color: #f4f4f4;
+	}
+
+.variable-row {
+	padding: 1% 4% 1%;
+	}
+
+.variable-col {
+	margin: 1% 4% 1%;
+	}
+
+.display-types-row {
+	padding: 1%;
+	margin: 1% 2% 1%;
+	}
+
+.var-types-button {
+	padding: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+	background-color: #007bff;
+	color: white;
+	border: none;
+	border-radius: 12px;
+	cursor: pointer;
+	}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+	}
+
+select {
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+	}
+	
+/* *** Footer Section *** */
+.social-media {
+	padding:2% 6% 1%;
+	margin: 0 auto;
+	text-align: center;
+	}
+	
+.link-icons {
+	margin: 4px;
+	color: #fff;
+	}
+	
+.footer-links {
+	text-align: center;
+	text-decoration: none;
+	color: #f3f3f3;
+	}
+	
+.fa-brands:hover {
+	transition: color 0.3s;
+  	color: #00b4d8;
+	}
+	
+.privacy-terms-of-use {
+	padding: 5px;
+	color: #f3f3f3;
+	}
+	
+.copyright-comment {
+	padding: 1%;
+	color: #a8b5f8;
+	}
+
+.footer-end {
+	color: #8f8f8f;
+	margin: 0;
+	padding-bottom: 12px;
+	}

@@ -1,0 +1,200 @@
+/********************************** General Styles ************************/
+body{
+	margin: 0px;
+	text-align: center;
+	}
+	
+	
+h2 { 
+  text-align: center;
+  color: ;
+  font-weight: bold;
+	}
+
+a {
+	text-decoration: none;
+	transition: color 0.3s;
+	}
+		
+a:hover {
+    color: #00b4d8;
+    }
+	
+a:active {
+	color: orange;
+	}
+
+/*********************************** ID SELECTORS ******************************/
+
+#featured-visualizations {
+	padding: 2% 10%;
+	margin: 0% auto 2%;
+	}
+
+/* ***** Footer Section ********* */
+#footer-fin {
+	background-color: #055160;
+	margin-bottom: 0px;
+	padding: 1% 2% 1%;
+	font-size: 1rem;
+	color: #fff;
+	}
+	
+/*************************************** CLASS SELECTORS *****************/
+/* *** Navbar *** */
+.logo-brand {
+	padding: auto 2%;
+	color: #00b4d8;
+	text-decoration: none;
+	font-weight: bold;
+	}
+.logo-brand:hover {
+	transition: 0.3s;
+	color: #031053;
+	}
+	
+.form-control:focus {
+    box-shadow: 1px 1px 1px  1px rgba(3, 16, 83, 0.9);
+    } 
+	
+.nav-link {
+    list-style: none;
+    display: flex;
+    color: #105d69;
+    }
+  
+.nav-link:hover {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+    color: #00b4d8;
+    }
+
+/* ************* Hero in (Header) ************************/
+	
+.banner-hero {
+    background-image: url('../images/data-vis-01.jpg'); 
+	background-size: cover; 
+	background-position: center;
+	height: 60vh;
+	padding: 6% 15%;
+	margin-top: 4.2%;
+	}
+	
+.banner {
+	display: block;
+	background-color: #000;
+    color: #fff;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+	}
+
+.hero-container {
+	z-index: 2;
+	background-color: rgba(255, 255, 255, 0.4); 
+	padding:3%;
+	}
+
+.banner-text {
+	color: #031053;
+	}
+.banner-text-p {
+	color: #031053;
+	font-weight: bold;
+	font-size: 1.3rem;
+	}
+	
+.top-button {
+	padding: 10px;
+    border-radius: 8px;
+    background: linear-gradient(#105d69, #11999e);
+    color: #EAF6F6;
+	margin: 0px 10px;
+	}
+
+/* **** Strength and focus Core areas *** */
+
+.core-areas {
+	padding: 3% 10%;
+	background-color: #f9fafc;
+	}
+
+.core-areas-box {
+	text-align: center;
+	padding: 3%;
+	margin: 2%;
+	background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	}
+
+.core-areas-box:hover {
+    transform: translateY(-10px);
+	/*transform: rotate(3deg);*/
+  	}
+	
+.col-text-holder {
+	margin-top: 10px;
+	color: #111;
+	}
+	
+/* **** featured Visualization *** */
+
+.feat-vis-heading {
+	padding: 2%;
+	color: #031053;
+	}
+
+.card {
+	padding: 3%;
+	text-align: center;
+	}
+
+.visualization-comment {
+	padding: 2%;
+	margin: 2%;
+	}
+	
+/* *** About Us Section *** */
+
+	
+/* *** Footer Section *** */
+.social-media {
+	padding:2% 6% 1%;
+	margin: 0 auto;
+	text-align: center;
+	}
+	
+.link-icons {
+	margin: 4px;
+	color: #fff;
+	}
+	
+.footer-links {
+	text-align: center;
+	text-decoration: none;
+	color: #f3f3f3;
+	}
+	
+.fa-brands:hover {
+	transition: color 0.3s;
+  	color: #00b4d8;
+	}
+	
+.privacy-terms-of-use {
+	padding: 5px;
+	color: #f3f3f3;
+	}
+	
+.copyright-comment {
+	padding: 1%;
+	color: #a8b5f8;
+	}
+
+.footer-end {
+	color: #8f8f8f;
+	margin: 0;
+	padding-bottom: 12px;
+	}
+
